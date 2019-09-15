@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="capa1">#757575</color>
+    <color name="capa2">#E0E0E0</color>
+    <color name="capa3">#EEEEEE</color>
+    <color name="capa4">#FAFAFA</color>
 </resources>

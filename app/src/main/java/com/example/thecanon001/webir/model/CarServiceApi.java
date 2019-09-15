@@ -1,39 +1,31 @@
 package com.example.thecanon001.webir.model;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.example.thecanon001.webir.client.WebServiceClient;
 import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.injection.BaseAplicattion;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class CarServiceApi implements  CarService {
-    private Retrofit retrofit;
-    private HttpLoggingInterceptor loggingInterceptor;
-    private OkHttpClient.Builder httpClientBuilder;
     private ArrayList<Car> listCar;
-    private final static String BASE_URL = "localhost";
+
+    @Inject
+    WebServiceClient webServiceClient;
 
     @Override
-    public ArrayList<Car> getCarList() {
-        loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
-        httpClientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
+    public ArrayList<Car> getCarList(Application application) {
         try {
-            retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(httpClientBuilder.build())
-                    .build();
-            WebServiceClient webServiceClient = retrofit.create(WebServiceClient.class);
+            setUpDagger(application);
             Call<List<Car>> call = webServiceClient.gerCarList();
             call.enqueue(new Callback<List<Car>>() {
                 @Override
@@ -52,5 +44,9 @@ public class CarServiceApi implements  CarService {
            listCar = new ArrayList<>();
         }
         return listCar;
+    }
+
+    private void setUpDagger(Application application) {
+        ((BaseAplicattion)application).getRetrofitComponent().inject(this);
     }
 }
