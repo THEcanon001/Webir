@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/activar_desactivar_stub"/>
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <EditText
+
+        android:id="@+id/search_edit"
+        android:inputType="textAutoComplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:hint="@string/url" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_margin="4dp">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@color/capa2"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/cancelar" />
+
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@color/capa2"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/confirmar" />
+    </LinearLayout>
+</LinearLayout>

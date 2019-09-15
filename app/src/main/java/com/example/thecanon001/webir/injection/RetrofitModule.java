@@ -1,7 +1,11 @@
 package com.example.thecanon001.webir.injection;
-import com.example.thecanon001.webir.R;
+
+import android.content.Context;
+
 import com.example.thecanon001.webir.client.WebServiceClient;
 import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.model.ContextProvider;
+
 import java.util.ArrayList;
 
 import javax.inject.Singleton;
@@ -15,7 +19,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class RetrofitModule {
-    private static final String BASE_URL = "localhost";
 
     @Singleton
     @Provides
@@ -37,7 +40,8 @@ public class RetrofitModule {
 
     @Singleton
     @Provides
-    Retrofit provideRetrofit(OkHttpClient okHttpClient, GsonConverterFactory gsonConverterFactory){
+    Retrofit provideRetrofit(OkHttpClient okHttpClient){
+        String BASE_URL = ContextProvider.getInstance().getContext().getSharedPreferences("config", Context.MODE_PRIVATE).getString("url","localhost");
         return new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
@@ -53,7 +57,6 @@ public class RetrofitModule {
     @Singleton
     @Provides
     ArrayList<Car> provideLoaderBase4List(){
-        ArrayList<String> list = generateImageList();
         ArrayList<Car> carList = new ArrayList<>();
         Car car = new Car();
         car.setModel("Fiat 1");
@@ -105,7 +108,6 @@ public class RetrofitModule {
         carList.add(car);
 
         car = new Car();
-
         car.setModel("Citroen Saxo");
         car.setKm("76777Km");
         car.setLocation("Montevideo");
@@ -117,6 +119,20 @@ public class RetrofitModule {
         car.setKm("15777Km");
         car.setLocation("Montevideo");
         car.setPrice("29500$");
+        carList.add(car);
+
+        car = new Car();
+        car.setModel("Rey Joaking");
+        car.setKm("0km");
+        car.setLocation("A 2 cuadras de la fing");
+        car.setPrice("precio incalculable");
+        carList.add(car);
+
+        car = new Car();
+        car.setModel("Jill Smith");
+        car.setKm("Disfruta de coquetear");
+        car.setLocation("cada hombre");
+        car.setPrice("que encuentra");
         carList.add(car);
 
         return carList;

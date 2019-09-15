@@ -27,7 +27,23 @@ public class CarServiceStub implements CarService {
         listCar.get(6).setImage(application.getString(R.string.image6));
         listCar.get(7).setImage(application.getString(R.string.image7));
         listCar.get(8).setImage(application.getString(R.string.image8));
+        listCar.get(9).setImage(application.getString(R.string.image9));
+        listCar.get(10).setImage(application.getString(R.string.image10));
         return listCar;
+    }
+
+    @Override
+    public ArrayList<Car> getCarList(Application application, String filter) {
+        ArrayList<Car> filterList = new ArrayList<>();
+        setUpDagger(application);
+        for(Car c: listCar){
+            if(c.getModel().toLowerCase().contains(filter.toLowerCase()) || c.getKm().toLowerCase().contains(filter.toLowerCase())
+                    ||c.getPrice().toLowerCase().contains(filter.toLowerCase())
+                    ||c.getLocation().toLowerCase().contains(filter.toLowerCase())){
+                filterList.add(c);
+            }
+        }
+        return filterList;
     }
 
     private void setUpDagger(Application application) {
