@@ -16,12 +16,12 @@ import android.widget.EditText;
 
 import com.example.thecanon001.webir.R;
 import com.example.thecanon001.webir.adapter.CarViewAdapter;
-import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.entity.Filter;
 import com.example.thecanon001.webir.model.ContextProvider;
 import com.example.thecanon001.webir.model.ServiceFactoryProvider;
 
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private long startMillis=0;
     private boolean stub;
     private String url;
-    private ArrayList<Car> carList = new ArrayList<Car>();
     private CarViewAdapter cardViewAdapter;
 
     @BindView(R.id.recycler_view)
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpView() {
         setSupportActionBar(toolbar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        cardViewAdapter = new CarViewAdapter(carList);
+        cardViewAdapter = new CarViewAdapter(new ArrayList<>(), getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(cardViewAdapter);
     }
@@ -67,13 +66,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        carList = ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication());
-        cardViewAdapter.updateListView(carList);
+        ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), cardViewAdapter);
     }
 
-    private void init_filter(String filter) {
-        carList = ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), filter);
-        cardViewAdapter.updateListView(carList);
+    private void init_filter(Filter filter) {
+        ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), filter, cardViewAdapter);
     }
 
     @OnClick(R.id.fab)
@@ -89,11 +86,27 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        EditText editText = view.findViewById(R.id.search_edit);
+        EditText editText_brand = view.findViewById(R.id.search_edit);
+        EditText editText_price = view.findViewById(R.id.search_price);
+        CheckBox check_usd = view.findViewById(R.id.usd);
+        CheckBox check_$ = view.findViewById(R.id.pesos);
+        CheckBox check_used = view.findViewById(R.id.used);
+        CheckBox check_new = view.findViewById(R.id.nes);
+
 
         Button btn_ok = view.findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(v-> {
-            init_filter(editText.getText().toString());
+            Filter filter = new Filter();
+            filter.setBrand(editText_brand.getText().toString());
+            if(editText_price != null && editText_price.getText() != null && !editText_price.getText().toString().isEmpty())
+                filter.setPrice(Double.parseDouble(editText_price.getText().toString()));
+            else
+                filter.setPrice(null);
+            filter.setUsd(check_usd.isChecked());
+            filter.set$(check_$.isChecked());
+            filter.setUsed(check_used.isChecked());
+            filter.set_new(check_new.isChecked());
+            init_filter(filter);
             dialog.cancel();
         });
 

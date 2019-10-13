@@ -2,12 +2,13 @@ package com.example.thecanon001.webir.model;
 
 import android.app.Application;
 
-import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.adapter.CarViewAdapter;
+import com.example.thecanon001.webir.entity.Filter;
 
 import java.util.ArrayList;
 
 public interface CarService {
-    public ArrayList<Car> getCarList(Application application);
+    void getCarList(Application application, CarViewAdapter cardViewAdapter);
 
-    ArrayList<Car> getCarList(Application application, String filter);
+    void getCarList(Application application, Filter filter, CarViewAdapter cardViewAdapter);
 }

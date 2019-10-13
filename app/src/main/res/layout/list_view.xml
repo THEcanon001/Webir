@@ -29,12 +29,23 @@
                 android:layout_height="@dimen/dim_1"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/margin_2"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:src="@drawable/ic_directions_car_black_24dp" />
 
+
             <TextView
-                android:id="@+id/text_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/margin_1"
+                android:layout_marginEnd="@dimen/margin_9p5"
+                android:layout_toStartOf="@id/text_brand"
+                android:text="@string/modelo"
+                android:textSize="@dimen/text_size_1" />
+
+            <TextView
+                android:id="@+id/text_brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -45,13 +56,31 @@
                 android:textSize="@dimen/text_size_1" />
 
             <TextView
-                android:id="@+id/text_km"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text_brand"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_9p5"
+                android:text="@string/estado"
+                android:textSize="@dimen/text_size_1" />
+
+            <TextView
+                android:id="@+id/text_condition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/text_model"
+                android:layout_below="@+id/text_brand"
                 android:layout_marginEnd="@dimen/margin_9"
                 android:text="@string/dummy"
+                android:textSize="@dimen/text_size_1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_9p5"
+                android:layout_below="@+id/text_condition"
+                android:text="@string/precio"
                 android:textSize="@dimen/text_size_1" />
 
             <TextView
@@ -59,13 +88,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/text_km"
+                android:layout_below="@+id/text_condition"
                 android:layout_marginEnd="@dimen/margin_9"
                 android:text="@string/dummy"
                 android:textSize="@dimen/text_size_1" />
 
             <TextView
-                android:id="@+id/text_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_9p5"
+                android:layout_below="@+id/text_price"
+                android:text="@string/moneda"
+                android:textSize="@dimen/text_size_1" />
+
+            <TextView
+                android:id="@+id/text_currency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/text_price"

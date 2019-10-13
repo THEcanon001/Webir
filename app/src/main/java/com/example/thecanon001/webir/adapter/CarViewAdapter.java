@@ -1,12 +1,8 @@
 package com.example.thecanon001.webir.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Icon;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +11,20 @@ import android.widget.TextView;
 
 
 import com.example.thecanon001.webir.R;
-import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.entity.Vehicle;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CarViewAdapter extends RecyclerView.Adapter<CarViewAdapter.ViewHolderView>{
 
-    private ArrayList<Car> carListView;
+    private ArrayList<Vehicle> vehicleListView;
+    private Context context;
 
-    public CarViewAdapter(ArrayList<Car> carListView) {
-        this.carListView = carListView;
+    public CarViewAdapter(ArrayList<Vehicle> vehicleListView, Context context) {
+        this.vehicleListView = vehicleListView;
+        this.context = context;
     }
 
     @NonNull
@@ -37,42 +37,53 @@ public class CarViewAdapter extends RecyclerView.Adapter<CarViewAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderView holder, final int position) {
-        if(carListView.get(position).getImage() != null || !carListView.get(position).getImage().isEmpty()) {
-            byte[] decodedString = Base64.decode(carListView.get(position).getImage(), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            holder.mCarImage.setImageBitmap(decodedByte);
+        if(vehicleListView.get(position).getPhotos() != null || !vehicleListView.get(position).getPhotos().isEmpty()) {
+            String[] photos = vehicleListView.get(position).getPhotos().split(",");
+            Picasso.with(context).load(photos[0]).placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
+                    .into(holder.mCarImage, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
         }
-        holder.mModel.setText(carListView.get(position).getModel());
-        holder.mKm.setText(carListView.get(position).getKm());
-        holder.mPrice.setText(carListView.get(position).getPrice());
-        holder.mLocation.setText(carListView.get(position).getLocation());
+        holder.mBrand.setText(vehicleListView.get(position).getBrand());
+        holder.mCondition.setText(vehicleListView.get(position).getCondition());
+        holder.mPrice.setText(String.valueOf(vehicleListView.get(position).getPrice()));
+        holder.mCurrency.setText(vehicleListView.get(position).getCurrency());
     }
 
 
     @Override
     public int getItemCount() {
-        return carListView.size();
+        return vehicleListView.size();
     }
 
-    public void updateListView(ArrayList<Car> carList){
-        this.carListView = carList;
+    public void updateListView(ArrayList<Vehicle> vehicleList){
+        this.vehicleListView = vehicleList;
         notifyDataSetChanged();
     }
 
     public class ViewHolderView extends RecyclerView.ViewHolder {
         ImageView mCarImage;
-        TextView mModel;
-        TextView mKm;
+        TextView mBrand;
+        TextView mCondition;
         TextView mPrice;
-        TextView mLocation;
+        TextView mCurrency;
 
         public ViewHolderView(View itemView) {
             super(itemView);
             mCarImage = itemView.findViewById(R.id.image_view);
-            mModel = itemView.findViewById(R.id.text_model);
-            mKm = itemView.findViewById(R.id.text_km);
+            mBrand = itemView.findViewById(R.id.text_brand);
+            mCondition = itemView.findViewById(R.id.text_condition);
             mPrice = itemView.findViewById(R.id.text_price);
-            mLocation = itemView.findViewById(R.id.text_location);
+            mCurrency = itemView.findViewById(R.id.text_currency);
         }
     }
 

@@ -3,7 +3,9 @@ package com.example.thecanon001.webir.model;
 import android.app.Application;
 
 import com.example.thecanon001.webir.R;
-import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.adapter.CarViewAdapter;
+import com.example.thecanon001.webir.entity.Filter;
+import com.example.thecanon001.webir.entity.Vehicle;
 import com.example.thecanon001.webir.injection.BaseAplicattion;
 
 import java.util.ArrayList;
@@ -13,37 +15,40 @@ import javax.inject.Inject;
 public class CarServiceStub implements CarService {
 
     @Inject
-    ArrayList<Car> listCar;
+    ArrayList<Vehicle> listVehicle;
 
     @Override
-    public ArrayList<Car> getCarList(Application application) {
+    public void getCarList(Application application, CarViewAdapter cardViewAdapter) {
         setUpDagger(application);
-        listCar.get(0).setImage(application.getString(R.string.image0));
-        listCar.get(1).setImage(application.getString(R.string.image1));
-        listCar.get(2).setImage(application.getString(R.string.image2));
-        listCar.get(3).setImage(application.getString(R.string.image3));
-        listCar.get(4).setImage(application.getString(R.string.image4));
-        listCar.get(5).setImage(application.getString(R.string.image5));
-        listCar.get(6).setImage(application.getString(R.string.image6));
-        listCar.get(7).setImage(application.getString(R.string.image7));
-        listCar.get(8).setImage(application.getString(R.string.image8));
-        listCar.get(9).setImage(application.getString(R.string.image9));
-        listCar.get(10).setImage(application.getString(R.string.image10));
-        return listCar;
+        listVehicle.get(0).setPhotos(application.getString(R.string.image0));
+        listVehicle.get(1).setPhotos(application.getString(R.string.image1));
+        listVehicle.get(2).setPhotos(application.getString(R.string.image2));
+        listVehicle.get(3).setPhotos(application.getString(R.string.image3));
+        listVehicle.get(4).setPhotos(application.getString(R.string.image4));
+        listVehicle.get(5).setPhotos(application.getString(R.string.image5));
+        listVehicle.get(6).setPhotos(application.getString(R.string.image6));
+        listVehicle.get(7).setPhotos(application.getString(R.string.image7));
+        listVehicle.get(8).setPhotos(application.getString(R.string.image8));
+        listVehicle.get(9).setPhotos(application.getString(R.string.image9));
+        listVehicle.get(10).setPhotos(application.getString(R.string.image10));
+        cardViewAdapter.updateListView(listVehicle);
     }
 
     @Override
-    public ArrayList<Car> getCarList(Application application, String filter) {
-        ArrayList<Car> filterList = new ArrayList<>();
+    public void getCarList(Application application, Filter filter, CarViewAdapter cardViewAdapter) {
+        ArrayList<Vehicle> filterList = new ArrayList<>();
         setUpDagger(application);
-        for(Car c: listCar){
-            if(c.getModel().toLowerCase().contains(filter.toLowerCase()) || c.getKm().toLowerCase().contains(filter.toLowerCase())
-                    ||c.getPrice().toLowerCase().contains(filter.toLowerCase())
-                    ||c.getLocation().toLowerCase().contains(filter.toLowerCase())){
+        for(Vehicle c: listVehicle){
+            if(c.getBrand().toLowerCase().contains(filter.getBrand())
+                    || (filter.is_new() && c.getCondition().toLowerCase().contains("new"))
+                    || (filter.isUsed() && c.getCondition().toLowerCase().contains("used"))
+                    || (filter.isUsd() && c.getCurrency().toLowerCase().contains("usd"))
+                    || (filter.is$() && c.getCurrency().toLowerCase().contains("$"))
+                    || (filter.getPrice() != null && c.getPrice() == filter.getPrice())){
                 filterList.add(c);
             }
         }
-        return filterList;
+        cardViewAdapter.updateListView(listVehicle);
     }
 
     private void setUpDagger(Application application) {

@@ -48,4 +48,7 @@ dependencies {
     //Dagger
     implementation 'com.google.dagger:dagger:2.20'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.20'
+
+    //Picaso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
 }

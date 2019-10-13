@@ -3,7 +3,7 @@ package com.example.thecanon001.webir.injection;
 import android.content.Context;
 
 import com.example.thecanon001.webir.client.WebServiceClient;
-import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.entity.Vehicle;
 import com.example.thecanon001.webir.model.ContextProvider;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class RetrofitModule {
     @Singleton
     @Provides
     Retrofit provideRetrofit(OkHttpClient okHttpClient){
-        String BASE_URL = ContextProvider.getInstance().getContext().getSharedPreferences("config", Context.MODE_PRIVATE).getString("url","localhost");
+        String BASE_URL = ContextProvider.getInstance().getContext().getSharedPreferences("config", Context.MODE_PRIVATE).getString("url","http://192.168.1.4:8080/webir/service/");
         return new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
@@ -56,91 +56,97 @@ public class RetrofitModule {
 
     @Singleton
     @Provides
-    ArrayList<Car> provideLoaderBase4List(){
-        ArrayList<Car> carList = new ArrayList<>();
-        Car car = new Car();
-        car.setModel("Fiat 1");
-        car.setKm("10000Km");
-        car.setLocation("Montevideo");
-        car.setPrice("6500$");
-        carList.add(car);
+    ArrayList<Vehicle> provideLoaderBase4List(){
+        ArrayList<Vehicle> vehicleList = new ArrayList<>();
+        Vehicle vehicle = new Vehicle();
+        vehicle.setBrand("Fiat");
+        vehicle.setCondition("used");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Fiat 1 perfecto estado");
+        vehicle.setPrice(3700);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Peugeot 206");
-        car.setKm("56777Km");
-        car.setLocation("Montevideo");
-        car.setPrice("9500$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Peugeot");
+        vehicle.setCondition("used");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Peugeot 206");
+        vehicle.setPrice(5500);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Ford Focus");
-        car.setKm("8777Km");
-        car.setLocation("Canelones");
-        car.setPrice("10500$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Ford");
+        vehicle.setCondition("new");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Ford Focus");
+        vehicle.setPrice(6500);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Renault Clio");
-        car.setKm("40000Km");
-        car.setLocation("Artigas");
-        car.setPrice("11500$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Renault");
+        vehicle.setCondition("used");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Renault Clio");
+        vehicle.setPrice(4566);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Mazda MX5");
-        car.setKm("124056Km");
-        car.setLocation("Salto");
-        car.setPrice("12400$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Mazda");
+        vehicle.setCondition("used");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Mazda MX5");
+        vehicle.setPrice(6700);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Fiat Punto");
-        car.setKm("76500Km");
-        car.setLocation("Montevideo");
-        car.setPrice("14400$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Fiat");
+        vehicle.setCondition("used");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Fiat Punto");
+        vehicle.setPrice(9500);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Suzuki Celerio");
-        car.setKm("35000Km");
-        car.setLocation("Las Piedras");
-        car.setPrice("7500$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Suzuki");
+        vehicle.setCondition("new");
+        vehicle.setCurrency("$");
+        vehicle.setTitle("Suzuki Celerio");
+        vehicle.setPrice(45000);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Citroen Saxo");
-        car.setKm("76777Km");
-        car.setLocation("Montevideo");
-        car.setPrice("6500$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Citroen");
+        vehicle.setCondition("used");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Citroen Saxo");
+        vehicle.setPrice(7500);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Toyota Prius");
-        car.setKm("15777Km");
-        car.setLocation("Montevideo");
-        car.setPrice("29500$");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Toyota");
+        vehicle.setCondition("new");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Toyota Prius");
+        vehicle.setPrice(12700);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Rey Joaking");
-        car.setKm("0km");
-        car.setLocation("A 2 cuadras de la fing");
-        car.setPrice("precio incalculable");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Joaking");
+        vehicle.setCondition("new");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Gominola");
+        vehicle.setPrice(999999);
+        vehicleList.add(vehicle);
 
-        car = new Car();
-        car.setModel("Jill Smith");
-        car.setKm("Disfruta de coquetear");
-        car.setLocation("cada hombre");
-        car.setPrice("que encuentra");
-        carList.add(car);
+        vehicle = new Vehicle();
+        vehicle.setBrand("Jill");
+        vehicle.setCondition(";)");
+        vehicle.setCurrency("USD");
+        vehicle.setTitle("Potra indomable");
+        vehicle.setPrice(1);
+        vehicleList.add(vehicle);
 
-        return carList;
+        return vehicleList;
     }
 
-    private ArrayList<String> generateImageList() {
-        ArrayList<String> list = new ArrayList<>();
-
-        return list;
-    }
 }

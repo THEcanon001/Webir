@@ -3,8 +3,10 @@ package com.example.thecanon001.webir.model;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.thecanon001.webir.adapter.CarViewAdapter;
 import com.example.thecanon001.webir.client.WebServiceClient;
-import com.example.thecanon001.webir.entity.Car;
+import com.example.thecanon001.webir.entity.Filter;
+import com.example.thecanon001.webir.entity.Vehicle;
 import com.example.thecanon001.webir.injection.BaseAplicattion;
 
 import java.util.ArrayList;
@@ -17,57 +19,57 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CarServiceApi implements  CarService {
-    private ArrayList<Car> listCar;
+    private ArrayList<Vehicle> listVehicle;
 
     @Inject
     WebServiceClient webServiceClient;
 
     @Override
-    public ArrayList<Car> getCarList(Application application) {
+    public void getCarList(Application application, CarViewAdapter cardViewAdapter) {
+        listVehicle = new ArrayList<>();
         try {
             setUpDagger(application);
-            Call<List<Car>> call = webServiceClient.gerCarList();
-            call.enqueue(new Callback<List<Car>>() {
+            Call<List<Vehicle>> call = webServiceClient.gerCarList("title", "");
+            call.enqueue(new Callback<List<Vehicle>>() {
                 @Override
-                public void onResponse(Call<List<Car>> call, Response<List<Car>> response) {
-                    listCar = (ArrayList<Car>) response.body();
+                public void onResponse(Call<List<Vehicle>> call, Response<List<Vehicle>> response) {
+                    listVehicle = (ArrayList<Vehicle>) response.body();
+                    cardViewAdapter.updateListView(listVehicle);
                 }
 
                 @Override
-                public void onFailure(Call<List<Car>> call, Throwable t) {
+                public void onFailure(Call<List<Vehicle>> call, Throwable t) {
                     Log.d("Error", t.getMessage());
                 }
             });
         }
         catch (Exception e){
            e.printStackTrace();
-           listCar = new ArrayList<>();
         }
-        return listCar;
     }
 
     @Override
-    public ArrayList<Car> getCarList(Application application, String filter) {
+    public void getCarList(Application application, Filter filter, CarViewAdapter cardViewAdapter) {
+        listVehicle = new ArrayList<>();
         try {
             setUpDagger(application);
-            Call<List<Car>> call = webServiceClient.gerCarList();
-            call.enqueue(new Callback<List<Car>>() {
+            Call<List<Vehicle>> call = webServiceClient.gerCarList("title", filter.getBrand());
+            call.enqueue(new Callback<List<Vehicle>>() {
                 @Override
-                public void onResponse(Call<List<Car>> call, Response<List<Car>> response) {
-                    listCar = (ArrayList<Car>) response.body();
+                public void onResponse(Call<List<Vehicle>> call, Response<List<Vehicle>> response) {
+                    listVehicle = (ArrayList<Vehicle>) response.body();
+                    cardViewAdapter.updateListView(listVehicle);
                 }
 
                 @Override
-                public void onFailure(Call<List<Car>> call, Throwable t) {
+                public void onFailure(Call<List<Vehicle>> call, Throwable t) {
                     Log.d("Error", t.getMessage());
                 }
             });
         }
         catch (Exception e){
             e.printStackTrace();
-            listCar = new ArrayList<>();
         }
-        return listCar;
     }
 
     private void setUpDagger(Application application) {
