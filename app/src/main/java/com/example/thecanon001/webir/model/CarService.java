@@ -5,7 +5,6 @@ import android.app.Application;
 import com.example.thecanon001.webir.adapter.CarViewAdapter;
 import com.example.thecanon001.webir.entity.Filter;
 
-import java.util.ArrayList;
 
 public interface CarService {
     void getCarList(Application application, CarViewAdapter cardViewAdapter);
