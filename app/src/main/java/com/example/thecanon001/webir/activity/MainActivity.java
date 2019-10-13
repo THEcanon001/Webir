@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.thecanon001.webir.R;
 import com.example.thecanon001.webir.adapter.CarViewAdapter;
@@ -22,6 +23,7 @@ import com.example.thecanon001.webir.model.ServiceFactoryProvider;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setUpView();
         loadPreferences();
         ContextProvider.getInstance().setContext(getApplicationContext());
-        init();
+        showDialog();
     }
 
     private void setUpView() {
@@ -65,12 +67,14 @@ public class MainActivity extends AppCompatActivity {
         url = preferences.getString("url","localhost");
     }
 
-    private void init() {
-        ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), cardViewAdapter);
-    }
-
-    private void init_filter(Filter filter) {
-        ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), filter, cardViewAdapter);
+    private void init(ArrayList<Filter> filterList) {
+        if(filterList.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Debe seleccionar un filtro de busqueda", Toast.LENGTH_SHORT).show();
+//            ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), cardViewAdapter);
+        } else if(filterList.size() == 1)
+            ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), filterList.get(0), cardViewAdapter);
+        else
+            ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), filterList, cardViewAdapter);
     }
 
     @OnClick(R.id.fab)
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         View view = layoutInflater.inflate(R.layout.dialog_filter,null);
         builder.setView(view);
         AlertDialog dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
 
         EditText editText_brand = view.findViewById(R.id.search_edit);
@@ -96,18 +101,52 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn_ok = view.findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(v-> {
+            ArrayList<Filter> filterList = new ArrayList<>();
             Filter filter = new Filter();
-            filter.setBrand(editText_brand.getText().toString());
-            if(editText_price != null && editText_price.getText() != null && !editText_price.getText().toString().isEmpty())
-                filter.setPrice(Double.parseDouble(editText_price.getText().toString()));
-            else
-                filter.setPrice(null);
-            filter.setUsd(check_usd.isChecked());
-            filter.set$(check_$.isChecked());
-            filter.setUsed(check_used.isChecked());
-            filter.set_new(check_new.isChecked());
-            init_filter(filter);
-            dialog.cancel();
+            if(editText_brand.getText() != null && !editText_brand.getText().toString().isEmpty()){
+                filter.setType("title");
+                filter.setValue(editText_brand.getText().toString());
+                filterList.add(filter);
+                filter = new Filter();
+            }
+            if(editText_price.getText() != null && !editText_price.getText().toString().isEmpty()){
+                filter.setType("price");
+                filter.setValue(editText_price.getText().toString());
+                filterList.add(filter);
+                filter = new Filter();
+            }
+
+            if(check_usd.isChecked()){
+                filter.setType("currency");
+                filter.setValue("USD");
+                filterList.add(filter);
+                filter = new Filter();
+            }
+
+            if(check_$.isChecked()){
+                filter.setType("currency");
+                filter.setValue("UYU");
+                filterList.add(filter);
+                filter = new Filter();
+            }
+
+            if(check_used.isChecked()){
+                filter.setType("condition");
+                filter.setValue("used");
+                filterList.add(filter);
+                filter = new Filter();
+            }
+
+            if(check_new.isChecked()){
+                filter.setType("condition");
+                filter.setValue("new");
+                filterList.add(filter);
+
+            }
+
+            init(filterList);
+            if(!filterList.isEmpty())
+                dialog.cancel();
         });
 
         Button btn_cancel = view.findViewById(R.id.btn_cancel);
@@ -135,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn_ok = view.findViewById(R.id.btn_ok);
         btn_ok.setOnClickListener(v->{
            savePreferences(checkBox.isChecked(), editText.getText().toString());
-           init();
+           showDialog();
            dialog.cancel();
         });
 

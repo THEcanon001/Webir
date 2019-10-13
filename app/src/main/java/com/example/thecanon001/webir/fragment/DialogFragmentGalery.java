@@ -52,7 +52,7 @@ public class DialogFragmentGalery extends DialogFragment {
         vehicle = (Vehicle) getArguments().getSerializable("vehicle");
         m_text_brand.setText(vehicle.getBrand());
         m_text_condition.setText(vehicle.getCondition());
-        m_text_currency.setText(vehicle.getCondition());
+        m_text_currency.setText(vehicle.getCurrency());
         m_title.setText(vehicle.getTitle());
         m_text_price.setText(String.valueOf(vehicle.getPrice()));
         m_galery.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));

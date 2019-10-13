@@ -9,6 +9,7 @@ import com.example.thecanon001.webir.entity.Vehicle;
 import com.example.thecanon001.webir.injection.BaseAplicattion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,18 +37,13 @@ public class CarServiceStub implements CarService {
 
     @Override
     public void getCarList(Application application, Filter filter, CarViewAdapter cardViewAdapter) {
-        ArrayList<Vehicle> filterList = new ArrayList<>();
         setUpDagger(application);
-        for(Vehicle c: listVehicle){
-            if(c.getBrand().toLowerCase().contains(filter.getBrand())
-                    || (filter.is_new() && c.getCondition().toLowerCase().contains("new"))
-                    || (filter.isUsed() && c.getCondition().toLowerCase().contains("used"))
-                    || (filter.isUsd() && c.getCurrency().toLowerCase().contains("usd"))
-                    || (filter.is$() && c.getCurrency().toLowerCase().contains("$"))
-                    || (filter.getPrice() != null && c.getPrice() == filter.getPrice())){
-                filterList.add(c);
-            }
-        }
+        cardViewAdapter.updateListView(listVehicle);
+    }
+
+    @Override
+    public void getCarList(Application application, List<Filter> filterList, CarViewAdapter cardViewAdapter) {
+        setUpDagger(application);
         cardViewAdapter.updateListView(listVehicle);
     }
 
