@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.DialogFragmentGalery">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:weightSum="10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_9"
+                    android:text="@string/modelo"
+                    android:textSize="@dimen/text_size_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_9"
+                    android:text="@string/estado"
+                    android:textSize="@dimen/text_size_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_9"
+                    android:text="@string/precio"
+                    android:textSize="@dimen/text_size_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_9"
+                    android:text="@string/moneda"
+                    android:textSize="@dimen/text_size_1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:weightSum="10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/text_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_1"
+                    android:text="@string/dummy"
+                    android:textSize="@dimen/text_size_1"/>
+
+                <TextView
+                    android:id="@+id/text_condition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dummy"
+                    android:textSize="@dimen/text_size_1" />
+
+                <TextView
+                    android:id="@+id/text_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dummy"
+                    android:textSize="@dimen/text_size_1" />
+                <TextView
+                    android:id="@+id/text_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_9"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/dummy"
+                    android:textSize="@dimen/text_size_1" />
+            </LinearLayout>
+    </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:textColor="#FFFFFF"/>
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/ae86"
+            android:layout_weight="8"
+            tools:ignore="InefficientWeight" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/galery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:layout_weight="2" />
+    </LinearLayout>
+</FrameLayout>
