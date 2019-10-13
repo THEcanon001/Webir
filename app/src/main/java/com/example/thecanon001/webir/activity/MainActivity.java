@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUpView() {
         setSupportActionBar(toolbar);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        cardViewAdapter = new CarViewAdapter(new ArrayList<>(), getApplicationContext());
+        cardViewAdapter = new CarViewAdapter(new ArrayList<>(), this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(cardViewAdapter);
     }
