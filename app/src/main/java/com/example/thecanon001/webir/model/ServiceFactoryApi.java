@@ -5,4 +5,9 @@ public class ServiceFactoryApi implements ServiceFactory {
     public CarService getCarService() {
         return new CarServiceApi();
     }
+
+    @Override
+    public UserService getUserService() {
+        return new UserServiceApi();
+    }
 }

@@ -5,4 +5,9 @@ public class ServiceFactoryStub implements ServiceFactory {
     public CarService getCarService() {
         return new CarServiceStub();
     }
+
+    @Override
+    public UserService getUserService() {
+        return new UserServiceStub();
+    }
 }

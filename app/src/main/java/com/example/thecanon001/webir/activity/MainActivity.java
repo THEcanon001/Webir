@@ -21,9 +21,7 @@ import com.example.thecanon001.webir.entity.Filter;
 import com.example.thecanon001.webir.model.ContextProvider;
 import com.example.thecanon001.webir.model.ServiceFactoryProvider;
 
-
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean stub;
     private String url;
     private CarViewAdapter cardViewAdapter;
+    private String token;
 
     @BindView(R.id.recycler_view)
     protected RecyclerView recyclerView;
@@ -46,6 +45,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                token= "dummy_token";
+            } else {
+                token= extras.getString("token");
+            }
+        } else {
+            token= (String) savedInstanceState.getSerializable("token");
+        }
         ButterKnife.bind(this);
         setUpView();
         loadPreferences();
@@ -151,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn_cancel = view.findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(v -> dialog.cancel());
+        Toast.makeText(getApplicationContext(),token,Toast.LENGTH_SHORT).show();
     }
 
 
