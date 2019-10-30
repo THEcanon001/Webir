@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
         setUpView();
         ContextProvider.getInstance().setContext(getApplicationContext());
@@ -139,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn_cancel = view.findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(v -> dialog.cancel());
-        Toast.makeText(getApplicationContext(),ConfigProvider.getInstance().getToken(),Toast.LENGTH_SHORT).show();
     }
 }
 

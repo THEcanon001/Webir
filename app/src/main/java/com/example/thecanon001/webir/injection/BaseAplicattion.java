@@ -16,4 +16,8 @@ public class BaseAplicattion extends Application {
    public RetrofitComponent getRetrofitComponent(){
        return retrofitComponent;
    }
+
+   public void refresh(){
+       this.onCreate();
+   }
 }

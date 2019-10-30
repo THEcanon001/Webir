@@ -99,6 +99,7 @@ public class CarServiceApi implements  CarService {
     }
 
     private void setUpDagger(Application application) {
+        ((BaseAplicattion) application).refresh();
         ((BaseAplicattion)application).getRetrofitComponent().inject(this);
     }
 }
