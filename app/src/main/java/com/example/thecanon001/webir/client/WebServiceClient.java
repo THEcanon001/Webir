@@ -1,10 +1,13 @@
 package com.example.thecanon001.webir.client;
 
+import com.example.thecanon001.webir.entity.User;
 import com.example.thecanon001.webir.entity.Vehicle;
 
 import java.util.List;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface WebServiceClient {
@@ -15,6 +18,9 @@ public interface WebServiceClient {
     @GET("vehicles_filters")
     Call<List<Vehicle>> gerCarList(@Query("filters") String filters);
 
-    @GET("Sesion")
-    Call<String> getSesion(String email, String password);
+    @POST("LoginUser")
+    Call<String> login(@Body User user);
+
+    @POST("RegisterUser")
+    Call<User> register(@Body User user);
 }

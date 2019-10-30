@@ -75,7 +75,10 @@ public class CarViewAdapter extends RecyclerView.Adapter<CarViewAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return vehicleListView.size();
+        if(vehicleListView != null)
+            return vehicleListView.size();
+        else
+            return 0;
     }
 
     public void updateListView(ArrayList<Vehicle> vehicleList){

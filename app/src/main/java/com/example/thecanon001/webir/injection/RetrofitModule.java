@@ -1,10 +1,8 @@
 package com.example.thecanon001.webir.injection;
 
-import android.content.Context;
-
 import com.example.thecanon001.webir.client.WebServiceClient;
 import com.example.thecanon001.webir.entity.Vehicle;
-import com.example.thecanon001.webir.model.ContextProvider;
+import com.example.thecanon001.webir.model.ConfigProvider;
 
 import java.util.ArrayList;
 
@@ -19,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
 public class RetrofitModule {
+
 
     @Singleton
     @Provides
@@ -41,7 +40,7 @@ public class RetrofitModule {
     @Singleton
     @Provides
     Retrofit provideRetrofit(OkHttpClient okHttpClient){
-        String BASE_URL = ContextProvider.getInstance().getContext().getSharedPreferences("config", Context.MODE_PRIVATE).getString("url","http://192.168.1.4:8080/webir/service/");
+        String BASE_URL = ConfigProvider.getInstance().getUrl(ConfigProvider.getInstance().getUrl_type());
         return new Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)

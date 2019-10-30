@@ -4,7 +4,7 @@ import android.app.Application;
 
 public class UserServiceStub implements UserService {
     @Override
-    public String getSesion(Application application, String email, String password) {
-        return "dummy_token_stub";
+    public boolean loginregister(Application application, String email, String password, Boolean isLoggin) {
+        return true;
     }
 }

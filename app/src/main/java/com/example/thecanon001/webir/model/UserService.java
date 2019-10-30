@@ -4,5 +4,5 @@ import android.app.Application;
 
 public interface UserService {
 
-    String getSesion(Application application, String email, String password);
+    boolean loginregister(Application application, String email, String password, Boolean isLoggin);
 }

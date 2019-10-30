@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -22,20 +23,22 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.thecanon001.webir.R;
+import com.example.thecanon001.webir.model.Config;
+import com.example.thecanon001.webir.model.ConfigProvider;
 import com.example.thecanon001.webir.model.ServiceFactoryProvider;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -67,8 +70,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private boolean stub;
-    private String token;
+    private int count = 0;
+    private long startMillis=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,22 +84,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        mEmailSignInButton.setOnClickListener(view -> attemptLogin(true));
+
+        Button mRegisterButton = (Button) findViewById(R.id.email_register_in_button);
+        mRegisterButton.setOnClickListener(view -> attemptLogin(false));
+
+        Button mShowConfig = (Button) findViewById(R.id.secret_display_options);
+        mShowConfig.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                long time= System.currentTimeMillis();
+                //if it is the first time, or if it has been more than 3 seconds since the first tap ( so it is like a new try), we reset everything
+                if (startMillis==0 || (time-startMillis> 3000) ) {
+                    startMillis=time;
+                    count=1;
+                }
+                //it is not the first, and it has been  less than 3 seconds since the first
+                else{ //  time-startMillis< 3000
+                    count++;
+                }
+                if(count == 5){
+                    showDialogConfig();
+                }
             }
         });
 
@@ -152,8 +163,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
+     * @param isLogin
      */
-    private void attemptLogin() {
+    private void attemptLogin(boolean isLogin) {
         if (mAuthTask != null) {
             return;
         }
@@ -198,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(email, password, isLogin);
             mAuthTask.execute((Void) null);
         }
     }
@@ -309,32 +321,33 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        private final boolean mIsLogin;
 
-        UserLoginTask(String email, String password) {
+        UserLoginTask(String email, String password, boolean isLogin) {
             mEmail = email;
             mPassword = password;
+            mIsLogin = isLogin;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            token = ServiceFactoryProvider.getServiceFactory(stub).getUserService().getSesion(getApplication(), mEmail, mPassword);
-            return true;
+            return ServiceFactoryProvider.getServiceFactory(ConfigProvider.getInstance().getStub()).getUserService().loginregister(getApplication(), mEmail, mPassword, mIsLogin);
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
             showProgress(false);
-
-            if (success) {
+            if (success && mIsLogin) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("token", token);
                 startActivity(intent);
                 finish();
-            } else {
+            } else if(!success){
+                Toast.makeText(getApplicationContext(),"error al registrar/logear usuario", Toast.LENGTH_SHORT).show();
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
-            }
+            } else
+                Toast.makeText(getApplicationContext(),"Usuario registrado con exito. Por favor inicie sesion", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -345,8 +358,51 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void loadPreferences() {
-        SharedPreferences preferences = getSharedPreferences("config", Context.MODE_PRIVATE);
-        stub = preferences.getBoolean("stub", false);
+        SharedPreferences preferences = getSharedPreferences(Config.getCONFIG(), Context.MODE_PRIVATE);
+        ConfigProvider.getInstance().setStub(preferences.getBoolean(Config.getSTUB(), Config.getDefaultStub()));
+        ConfigProvider.getInstance().setUrl_api(preferences.getString(Config.getURL_api(), Config.getDefaultUrlApi()));
+        ConfigProvider.getInstance().setUrl_Sesion(preferences.getString(Config.getUrlSesion(), Config.getDefaultUrlSesion()));
+    }
+
+    private void showDialogConfig() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View view = layoutInflater.inflate(R.layout.dialog_config,null);
+        builder.setView(view);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        CheckBox checkBox = view.findViewById(R.id.checkbox);
+        EditText editText_sesion = view.findViewById(R.id.search_edit);
+        EditText editText_api = view.findViewById(R.id.search_api);
+
+        if(ConfigProvider.getInstance().getStub()){
+            checkBox.setChecked(true);
+        }
+
+        editText_sesion.setText(ConfigProvider.getInstance().getUrl(1));
+        editText_api.setText(ConfigProvider.getInstance().getUrl(2));
+
+        Button btn_ok = view.findViewById(R.id.btn_ok);
+        btn_ok.setOnClickListener(v->{
+            savePreferences(checkBox.isChecked(), editText_sesion.getText().toString(), editText_api.getText().toString());
+            dialog.cancel();
+        });
+
+        Button btn_cancel = view.findViewById(R.id.btn_cancel);
+        btn_cancel.setOnClickListener(v -> dialog.cancel());
+    }
+
+    private void savePreferences(boolean stub, String url_sesion, String url_api) {
+        SharedPreferences preferences = getSharedPreferences(Config.getCONFIG(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Config.getSTUB(),stub);
+        editor.putString(Config.getUrlSesion(),url_sesion);
+        editor.putString(Config.getURL_api(),url_api);
+        ConfigProvider.getInstance().setStub(stub);
+        ConfigProvider.getInstance().setUrl_api(url_api);
+        ConfigProvider.getInstance().setUrl_Sesion(url_sesion);
+        editor.apply();
     }
 }
 
