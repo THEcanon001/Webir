@@ -14,4 +14,7 @@ public interface WebServiceClient {
 
     @GET("vehicles_filters")
     Call<List<Vehicle>> gerCarList(@Query("filters") String filters);
+
+    @GET("vehicles_all")
+    Call<List<Vehicle>> gerCarList();
 }

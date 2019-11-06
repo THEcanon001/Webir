@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setUpView();
         loadPreferences();
         ContextProvider.getInstance().setContext(getApplicationContext());
-        showDialog();
+        init(new ArrayList<>());
     }
 
     private void setUpView() {
@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void init(ArrayList<Filter> filterList) {
         if(filterList.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Debe seleccionar un filtro de busqueda", Toast.LENGTH_SHORT).show();
-//            ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), cardViewAdapter);
+            //Toast.makeText(getApplicationContext(), "Debe seleccionar un filtro de busqueda", Toast.LENGTH_SHORT).show();
+            ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), cardViewAdapter);
         } else if(filterList.size() == 1)
             ServiceFactoryProvider.getServiceFactory(stub).getCarService().getCarList(getApplication(), filterList.get(0), cardViewAdapter);
         else

@@ -30,7 +30,7 @@ public class CarServiceApi implements  CarService {
         listVehicle = new ArrayList<>();
         try {
             setUpDagger(application);
-            Call<List<Vehicle>> call = webServiceClient.gerCarList("title", "");
+            Call<List<Vehicle>> call = webServiceClient.gerCarList();
             call.enqueue(new Callback<List<Vehicle>>() {
                 @Override
                 public void onResponse(Call<List<Vehicle>> call, Response<List<Vehicle>> response) {

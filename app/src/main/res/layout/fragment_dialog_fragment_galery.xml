@@ -63,6 +63,24 @@
                     android:textSize="@dimen/text_size_1"
                     android:textColor="@color/capa1"
                     android:textStyle="bold"/>
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginEnd="@dimen/margin_9"-->
+                    <!--android:text="@string/Km"-->
+                    <!--android:textSize="@dimen/text_size_1"-->
+                    <!--android:textColor="@color/capa1"-->
+                    <!--android:textStyle="bold"/>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginEnd="@dimen/margin_9"-->
+                    <!--android:text="@string/a_o"-->
+                    <!--android:textSize="@dimen/text_size_1"-->
+                    <!--android:textColor="@color/capa1"-->
+                    <!--android:textStyle="bold"/>-->
             </LinearLayout>
 
             <LinearLayout
@@ -104,6 +122,24 @@
                     android:text="@string/dummy"
                     android:textSize="@dimen/text_size_1"
                     android:textColor="@color/capa1"/>
+
+                <!--<TextView-->
+                    <!--android:id="@+id/text_km"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginEnd="@dimen/margin_9"-->
+                    <!--android:text="@string/dummy"-->
+                    <!--android:textSize="@dimen/text_size_1"-->
+                    <!--android:textColor="@color/capa1"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/text_year"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginEnd="@dimen/margin_9"-->
+                    <!--android:text="@string/dummy"-->
+                    <!--android:textSize="@dimen/text_size_1"-->
+                    <!--android:textColor="@color/capa1"/>-->
             </LinearLayout>
         </LinearLayout>
 
